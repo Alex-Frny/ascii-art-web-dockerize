@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Générateur de texte ASCII Art"
+    >
+
+    <title>ASCII Art Generator</title>
+
+    <link
+        rel="stylesheet"
+        href="/static/style.css"
+    >
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container">
+            <a href="/" class="logo">
+                ASCII<span>ART</span>
+            </a>
+
+            <p class="subtitle">
+                Transformez votre texte en œuvre ASCII
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="generator-card">
+            <div class="card-header">
+                <p class="section-label">Générateur</p>
+
+                <h1>Créez votre ASCII Art</h1>
+
+                <p class="description">
+                    Saisissez votre texte, choisissez une bannière,
+                    puis générez votre résultat.
+                </p>
+            </div>
+
+            <form
+                action="/ascii-art"
+                method="post"
+                class="ascii-form"
+            >
+                <div class="form-group">
+                    <label for="text">
+                        Texte à transformer
+                    </label>
+
+                    <textarea
+                        id="text"
+                        name="text"
+                        rows="5"
+                        maxlength="1000"
+                        placeholder="Écrivez votre texte ici..."
+                        required
+                    >{{.Text}}</textarea>
+
+                    <p class="form-help">
+                        Les caractères ASCII imprimables sont acceptés.
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label for="banner">
+                        Style de bannière
+                    </label>
+
+                    <select
+                        id="banner"
+                        name="banner"
+                        required
+                    >
+                        <option
+                            value="standard"
+                            {{if eq .Banner "standard"}}selected{{end}}
+                        >
+                            Standard
+                        </option>
+
+                        <option
+                            value="shadow"
+                            {{if eq .Banner "shadow"}}selected{{end}}
+                        >
+                            Shadow
+                        </option>
+
+                        <option
+                            value="thinkertoy"
+                            {{if eq .Banner "thinkertoy"}}selected{{end}}
+                        >
+                            Thinkertoy
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="primary-button">
+                        Générer l’ASCII Art
+                    </button>
+
+                    <button type="reset" class="secondary-button">
+                        Effacer
+                    </button>
+                </div>
+            </form>
+        </section>
+
+        {{if .Error}}
+        <section class="message error-message" role="alert">
+            <div>
+                <strong>Une erreur est survenue</strong>
+                <p>{{.Error}}</p>
+            </div>
+        </section>
+        {{end}}
+
+        {{if .Result}}
+        <section class="result-card">
+            <div class="result-header">
+                <div>
+                    <p class="section-label">Résultat</p>
+                    <h2>Votre ASCII Art</h2>
+                </div>
+
+                <a href="/" class="new-button">
+                    Nouveau texte
+                </a>
+            </div>
+
+            <div class="result-container">
+                <pre id="ascii-result">{{.Result}}</pre>
+            </div>
+        </section>
+        {{end}}
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>
+                Projet réalisé en Go avec ASCII Art Web.
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
